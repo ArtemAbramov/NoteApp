@@ -10,6 +10,9 @@
 <body>
   <div id="app">
     <h1> {{ title }} </h1>
+    <div class="message" v-if='message'>
+      <p> {{ message }} </p>
+    </div>
 
     <!-- new note -->
     <div class="new-note">
@@ -37,6 +40,7 @@
     el: '#app',
     data: {
       title: 'Notes App',
+      message: null,
       note: {
         title: '',
         descr: ''
@@ -63,11 +67,20 @@
       addNote () {
         // console.log(this.note)
         let {title, descr} = this.note
+
+        if (title === '') {
+          this.message = "title can't be blank!"
+          return false
+        }
+
         this.notes.push({
           title,
           descr,
           date: new Date(Date.now()).toLocaleString()
         })
+        this.note.title = ''
+        this.note.descr = ''
+        this.message = null
       }
     }
   })
