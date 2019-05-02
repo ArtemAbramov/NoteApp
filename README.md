@@ -1,4 +1,4 @@
-# vue-cli
+# NodeApp
 
 ## Project setup
 ```
