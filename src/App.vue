@@ -3,25 +3,25 @@
     <div class='wrapper-content'>
       <section>
         <div class="container">
+
+          <!-- Title -->
           <h1> {{ title }} </h1>
+
+          <!-- Message -->
           <message v-if='message' :message='message' />
 
+          <!-- NewNote -->
           <newNote 
             :note='note' 
-            @addNote='addNote' />
+            @addNote='addNote' 
+          />
 
-          <!-- note list -->
-          <div class="notes">
-            <div class="note" v-for='(note, index) in notes' :key='index'>
-              <div class="note-header">
-                <p> {{ note.title }} </p>
-              </div>
-              <div class="note-body">
-                <p> {{ note.descr }} </p>
-                <span> {{ note.date }} </span>
-              </div>
-            </div>
-          </div>
+          <!-- Notes -->
+          <notes 
+            :notes='notes'
+            @remove='removeNote'
+          />
+          
         </div>
       </section>      
     </div>
@@ -31,10 +31,12 @@
 <script>
 import message from '@/components/Message.vue'
 import newNote from '@/components/NewNote.vue'
+import notes from '@/components/Notes.vue'
 export default {
   components: {
     message,
-    newNote
+    newNote,
+    notes
   },
   data () {
     return {
@@ -81,6 +83,9 @@ export default {
       this.note.title = ''
       this.note.descr = ''
       this.message = null
+    },
+    removeNote (index) {
+      this.notes.splice(index, 1)
     }
   }
 }
