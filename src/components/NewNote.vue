@@ -27,7 +27,12 @@ export default {
 
 <style lang="scss">
 .new-note {
+  margin-top: 20px;
   text-align: center;
+
+  textarea {
+    margin-bottom: 20px;
+  }
 }
 </style>
 
