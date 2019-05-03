@@ -1,6 +1,11 @@
 <template>
   <div class="notes">
-    <div class="note" :class='{ full: !grid }' v-for="(note, index) in notes" :key="index">
+    <div 
+      class="note" 
+      :class='{ full: !grid, standart: note.priority === "Standart", important: note.priority === "Important", "most-important": note.priority === "Most important" }' 
+      v-for="(note, index) in notes" 
+      :key="index"
+    >
       <div class="note-header" :class="{ full: !grid }">
         <p>{{ note.title }}</p>
         <p style="cursor: pointer;" @click="removeNote(index)">x</p>
@@ -48,12 +53,36 @@ export default {
   margin-bottom: 20px;
   background-color: #fff;
   transition: all .25s cubic-bezier(.02,.01,.47,1);
-  box-shadow: 0 30px 30px rgba(0,0,0,.02);
+  box-shadow: 0 10px 10px rgba(0,0,0,.5);
+
+  &.standart {
+    box-shadow: 0 10px 10px rgba(#43A047,.5);
+  }
+
+  &.important {
+    box-shadow: 0 10px 10px rgba(#FDD835,.5);
+  }
+
+  &.most-important {
+    box-shadow: 0 10px 10px rgba(#DD2C00,.5);
+  }
 
   &:hover {
-    box-shadow: 0 30px 30px rgba(0,0,0,.04);
+    box-shadow: 0 10px 10px rgba(0,0,0,1);
     transform: translate(0,-6px);
     transition-delay: 0s !important;
+
+    &.standart {
+      box-shadow: 0 10px 10px rgba(#43A047,1);
+    }
+
+    &.important {
+      box-shadow: 0 10px 10px rgba(#FDD835,1);
+    }
+
+    &.most-important {
+      box-shadow: 0 10px 10px rgba(#DD2C00,1);
+    }
   }
 
   &.full {
@@ -67,6 +96,10 @@ export default {
   align-items: center;
   justify-content: space-between;
 
+  h2 {
+    font-size: 32px;
+  }
+
   &.full {
     justify-content: center;
 
@@ -77,10 +110,6 @@ export default {
         margin-right: 0;
       }
     }
-  }
-
-  h1 {
-    font-size: 32px;
   }
 
   p {

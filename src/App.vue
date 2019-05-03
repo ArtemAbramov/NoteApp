@@ -3,16 +3,19 @@
     <div class='wrapper-content'>
       <section>
         <div class="container">
+          <div class="app-header">
+            <h1> {{ title }} </h1>
+          </div>
 
           <!-- Message -->
           <message v-if='message' :message='message' />
 
           <!-- NewNote -->
-          <newNote :note='note' @addNote='addNote' />
+          <newNote :note='note' :priorities='priorities' @addNote='addNote' />
 
           <!-- Title -->
           <div class="note-header" style='margin: 56px 0 36px 0;'>
-            <h1> {{ title }} </h1>
+            <h2> {{ title }} </h2>
 
             <search 
               :value='search' 
@@ -52,24 +55,33 @@ export default {
       search: '',
       message: null,
       grid: true,
+      priorities: [
+        'Standart',
+        'Important',
+        'Most important'
+      ],
       note: {
         title: '',
-        descr: ''
+        descr: '',
+        priority: 'Standart'
       },
       notes: [
         {
           title: 'First Note',
           descr: 'Decription for first note',
+          priority: 'Standart',
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: 'Second Note',
           descr: 'Decription for second note',
+          priority: 'Standart',
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: 'Third Note',
           descr: 'Decription for third note',
+          priority: 'Standart',
           date: new Date(Date.now()).toLocaleString()
         }
       ]
@@ -92,7 +104,7 @@ export default {
   methods: {
     addNote () {
       // console.log(this.note)
-      let {title, descr} = this.note
+      let {title, descr, priority} = this.note
 
       if (title === '') {
         this.message = "Title can't be blank!"
@@ -102,10 +114,12 @@ export default {
       this.notes.push({
         title,
         descr,
+        priority,
         date: new Date(Date.now()).toLocaleString()
       })
       this.note.title = ''
       this.note.descr = ''
+      this.note.priority = 'Standart'
       this.message = null
     },
     removeNote (index) {
@@ -116,5 +130,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.app-header {
+  text-align: center;
+
+  h1 {
+    font-size: 26px;
+    color: #402caf;
+  }
+}
 </style>
 
