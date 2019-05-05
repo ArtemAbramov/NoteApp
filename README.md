@@ -1,4 +1,4 @@
-# NodeApp
+# NoteApp
 
 ## Project setup
 ```
