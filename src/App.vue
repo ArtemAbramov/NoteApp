@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div @click='editClose' class="wrapper">
     <div class='wrapper-content'>
       <section>
         <div class="container">
@@ -14,7 +14,7 @@
           <newNote :note='note' :priorities='priorities' @addNote='addNote' />
 
           <!-- Title -->
-          <div class="note-header" style='margin: 56px 0 36px 0;'>
+          <div @click='editClose' class="note-header" style='margin: 56px 0 36px 0;'>
             <h2> {{ title }} </h2>
 
             <search 
@@ -29,7 +29,7 @@
           </div>
 
           <!-- Notes List -->
-          <notes :notes='notesFilter' :grid='grid' @remove='removeNote' />
+          <notes :notes='notesFilter' :grid='grid' @remove='removeNote' @editTitle='editTitle' @editDescr='editDescr' @editClose='editClose' />
           
         </div>
       </section>      
@@ -63,25 +63,41 @@ export default {
       note: {
         title: '',
         descr: '',
-        priority: 'Standart'
+        priority: 'Standart',
+        titleEdit: false,
+        descrEdit: false,
+        titleEditText: '',
+        descrEditText: ''
       },
       notes: [
         {
           title: 'First Note',
           descr: 'Decription for first note',
           priority: 'Standart',
+          titleEdit: false,
+          descrEdit: false,
+          titleEditText: '',
+          descrEditText: '',
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: 'Second Note',
           descr: 'Decription for second note',
           priority: 'Standart',
+          titleEdit: false,
+          descrEdit: false,
+          titleEditText: '',
+          descrEditText: '',
           date: new Date(Date.now()).toLocaleString()
         },
         {
           title: 'Third Note',
           descr: 'Decription for third note',
           priority: 'Standart',
+          titleEdit: false,
+          descrEdit: false,
+          titleEditText: '',
+          descrEditText: '',
           date: new Date(Date.now()).toLocaleString()
         }
       ]
@@ -104,7 +120,7 @@ export default {
   methods: {
     addNote () {
       // console.log(this.note)
-      let {title, descr, priority} = this.note
+      let {title, descr, priority, titleEdit, descrEdit, titleEditText, descrEditText} = this.note
 
       if (title === '') {
         this.message = "Title can't be blank!"
@@ -115,6 +131,10 @@ export default {
         title,
         descr,
         priority,
+        titleEdit,
+        descrEdit,
+        titleEditText,
+        descrEditText,
         date: new Date(Date.now()).toLocaleString()
       })
       this.note.title = ''
@@ -124,6 +144,34 @@ export default {
     },
     removeNote (index) {
       this.notes.splice(index, 1)
+    },
+    editTitle (index) {
+      for (let i = 0; i < this.notes.length; i++){
+        if (i !== index) {
+          this.notes[i].titleEdit = false
+          this.notes[i].titleEditText = ''
+        }
+      }
+      this.notes[index].titleEditText = this.notes[index].title
+      this.notes[index].titleEdit = true
+    },
+    editDescr (index) {
+      for (let i = 0; i < this.notes.length; i++){
+        if (i !== index) {
+          this.notes[i].descrEdit = false
+          this.notes[i].descrEditText = ''
+        }
+      }
+      this.notes[index].descrEditText = this.notes[index].descr
+      this.notes[index].descrEdit = true
+    },
+    editClose () {
+      for (let i = 0; this.notes.length; i++) {
+        this.notes[i].titleEdit = false
+        this.notes[i].titleEditText = ''
+        this.notes[i].descrEdit = false
+        this.notes[i].descrEditText = ''
+      }
     }
   }
 }

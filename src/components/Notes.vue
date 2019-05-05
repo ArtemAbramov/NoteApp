@@ -5,13 +5,26 @@
       :class='{ full: !grid, standart: note.priority === "Standart", important: note.priority === "Important", "most-important": note.priority === "Most important" }' 
       v-for="(note, index) in notes" 
       :key="index"
+      @click.stop = ''
     >
       <div class="note-header" :class="{ full: !grid }">
-        <p>{{ note.title }}</p>
+        <p v-if='!note.titleEdit' @click='$emit("editTitle",index)'>{{ note.title }}</p>
+        <input 
+          v-model = 'note.titleEditText' 
+          v-if="note.titleEdit" 
+          type="text" 
+          @keyup.enter = 'note.title = note.titleEditText, note.titleEdit = false, note.titleEditText = ""'
+        >
         <p style="cursor: pointer;" @click="removeNote(index)">x</p>
       </div>
       <div class="note-body">
-        <p>{{ note.descr }}</p>
+        <p v-if='!note.descrEdit' @click='$emit("editDescr",index)'>{{ note.descr }}</p>
+        <input 
+          v-model = 'note.descrEditText' 
+          v-if="note.descrEdit" 
+          type="text"
+          @keyup.enter = 'note.descr = note.descrEditText, note.descrEdit = false, note.descrEditText = ""'
+        >
         <span>{{ note.date }}</span>
       </div>
     </div>
@@ -29,6 +42,13 @@ export default {
       type: Boolean,
       required: true
     }
+  },
+  mounted () {
+    document.body.addEventListener('keyup', e => {
+      if (e.keyCode === 27) {
+        this.$emit('editClose')
+      }
+    })
   },
   methods: {
     removeNote(index) {
@@ -54,6 +74,24 @@ export default {
   background-color: #fff;
   transition: all .25s cubic-bezier(.02,.01,.47,1);
   box-shadow: 0 10px 10px rgba(0,0,0,.5);
+
+  .note-header {
+    input {
+      margin-bottom: 0;
+      width: 80%;
+      height: 40px;
+      color: #402caf;
+      font-size: 22px;
+    }
+  }
+
+  .note-body {
+    input {
+      margin: 20px 0;
+      width: 90%;
+      height: 40px;
+    }
+  }
 
   &.standart {
     box-shadow: 0 10px 10px rgba(#43A047,.5);
@@ -88,10 +126,29 @@ export default {
   &.full {
     width: 100%;
     text-align: center;
+
+    .note-header {
+      input {
+        margin-right: 20px;
+        width: 50%;
+        text-align: center;
+      }
+    }
+
+    .note-body {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      input {
+        width: 60%;
+        text-align: center;
+      }
+    }
   }
 }
 
 .note-header {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -131,6 +188,8 @@ export default {
 }
 
 .note-body {
+  position: relative;
+
   p {
     margin: 20px 0;
   }
