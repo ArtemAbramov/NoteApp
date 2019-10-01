@@ -1,5 +1,7 @@
 # NoteApp
 
+## This is a course project
+
 ## Project setup
 ```
 npm install
